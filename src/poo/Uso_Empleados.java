@@ -10,23 +10,34 @@ import java.util.*;
 		jefe_RRHH.establecerIncentivo(2570);
 		
 		
-		Empleado empleados[] = new Empleado[6]; // Estamos almacenando un objeto de tipo Jefatura en un array de tipo Empleado en [4]
+		Empleado empleados[] = new Empleado[6]; // Estamos almacenando un objeto de tipo Jefatura en un array de tipo Empleado en [4], [5]
 		
 		empleados[0] = new Empleado("Jorge", 5500.0, 2020, 8, 27);
 		empleados[1] = new Empleado("Samuel", 4500.0, 2000, 13, 3); 
 		empleados[2] = new Empleado("Sara", 7500.0, 2019, 1, 15); 
 		empleados[3] = new Empleado("Luis", 4300.0, 2000, 9, 6); 
-		empleados[4] = jefe_RRHH; //Polimorfismo en acción. Principio de sustitución.
+		empleados[4] = jefe_RRHH; //Polimorfismo en acción. Principio de Sustitución.
 		empleados[5] = new Jefatura("María", 45000, 2007, 12, 23); // Es otra forma perfectamente válida de representar el P.S.
+		
+		
+		
+		
+		Jefatura Jefa_Finanzas = (Jefatura) empleados[5];// Casting
+		
+		Jefa_Finanzas.establecerIncentivo(3000);// Y ahora si!
+		
+		
+		
+		
 		
 		for(Empleado e : empleados) {
 			e.cargarSueldo(5);
 		}
 		
 		for(Empleado e : empleados) {
-			System.out.println("Nombre: " + e.dameNombre() + 
-					" Sueldo: " + e.dameSueldo() + " Fecha: " + e.dameFechaContrato());
-		}	// dameSueldo es un metodo preteneciente a dos clases diferentes, y ambas son llamadas [enlazado dinámico]
+			System.out.println("Nombre: " + e.dameNombre() + "   Id: " + e.dameId() +
+					"   Sueldo: " + e.dameSueldo() + "   Fecha: " + e.dameFechaContrato());
+		}	// dameSueldo es un metodo perteneciente a dos clases diferentes, y ambas son llamadas según el objeto. [enlazado dinámico]
 		
 		System.out.println(Empleado.mostrarIdSiguiente());
 		
@@ -51,7 +62,7 @@ class Empleado{
 		
 		Id = IdSiguiente;
 		
-		IdSiguiente++;
+		++IdSiguiente;
 	}
 	
 	public Empleado(String nombre){
@@ -75,6 +86,10 @@ class Empleado{
 	
 	public String dameNombre() {
 		return nombre;
+	}
+	
+	public int dameId() {
+		return Id;
 	}
 	
 	public double dameSueldo() {		
@@ -103,26 +118,26 @@ class Empleado{
 	
 	private int Id;
 
-	public static int IdSiguiente;
+	public static int IdSiguiente=1;
 	
 }
 
 class Jefatura extends Empleado{
 	
-	public Jefatura(String nom, double sue, int agno, int mes, int dia) {
-		super(nom, sue, agno, mes, dia);
+	public Jefatura(String nom, double sue, int agno, int mes, int dia) { // Constructor que une dos grupos de parámetros! 
+		super(nom, sue, agno, mes, dia); // Constructor padre al que nos dirigimos
 	}
 	
 	public void establecerIncentivo(double b) {
 		incentivo = b;
 	}
 	
-	public double dameSueldo() {
+	public double dameSueldo() { 
 		
 		double sueldoJefe = super.dameSueldo();
 		
 		return sueldoJefe + incentivo;
 	}
 	
-	private double incentivo;
+	private double incentivo; 
 }
